@@ -5,6 +5,7 @@ const cors = require('cors');
 dotenv.config();
 const app = express();
 const authRouter = require('./routes/authRoute');
+const jobsRouter = require('./routes/jobsRoute');
 const healthCheckRouter = require('./routes/healthCheck');
 const notFoundError = require('./middleware/error/notFoundError');
 const unknownErrorHandler = require('./middleware/error/errorHandler');
@@ -18,7 +19,8 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/health', tokenValidation, healthCheckRouter);
-app.use('/api/v1', authRouter);
+app.use('/api/v1/users', authRouter);
+app.use('/api/v1/jobs', jobsRouter);
 
 app.use(notFoundError);
 app.use(unknownErrorHandler);

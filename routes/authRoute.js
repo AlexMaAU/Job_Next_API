@@ -4,7 +4,7 @@ const { Router } = require('express');
 
 const authRouter = Router();
 
-authRouter.post('/users/login', login);
-authRouter.post('/users/register', signup);
+authRouter.post('/login', login);
+authRouter.post('/register', signup);
 
 module.exports = authRouter;

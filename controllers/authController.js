@@ -1,5 +1,6 @@
 const userModel = require('../models/userModel');
 const { generateToken } = require('../utils/jwt');
+const userSchema = require('../validations/userValidation');
 
 const login = async (req, res) => {
   const { email, password } = req.body;
@@ -32,7 +33,12 @@ const signup = async (req, res) => {
     return res.status(400).json('Missing username or email or password');
   }
   try {
-    const newUser = new userModel({ username, email, password });
+    const validBody = await userSchema.validateAsync({
+      username,
+      email,
+      password,
+    });
+    const newUser = new userModel(validBody);
     // hash password and save it to database
     await newUser.hashPassword();
     await newUser.save();
