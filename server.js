@@ -7,10 +7,12 @@ const app = express();
 const authRouter = require('./routes/authRoute');
 const jobsRouter = require('./routes/jobsRoute');
 const healthCheckRouter = require('./routes/healthCheck');
-const notFoundError = require('./middleware/error/notFoundError');
-const unknownErrorHandler = require('./middleware/error/errorHandler');
+const notFoundRouter = require('./routes/notFoundRoute');
+const validationError = require('./middleware/error/validationError');
+const errorHandler = require('./middleware/error/errorHandler');
 const connectToDB = require('./utils/db');
 const tokenValidation = require('./middleware/authGuard');
+const morgan = require('morgan');
 
 const port = process.env.PORT || 4040;
 
@@ -18,12 +20,18 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
+// use morgan for better logging
+if (process.env.NODE_ENV !== 'production') {
+  app.use(morgan('dev'));
+}
+
 app.use('/api/health', tokenValidation, healthCheckRouter);
 app.use('/api/v1/users', authRouter);
 app.use('/api/v1/jobs', jobsRouter);
+app.use('/*', notFoundRouter); //for unmatched endpoint request
 
-app.use(notFoundError);
-app.use(unknownErrorHandler);
+app.use(validationError);
+app.use(errorHandler);
 
 connectToDB()
   .then(() => {

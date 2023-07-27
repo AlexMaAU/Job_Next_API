@@ -1,5 +1,6 @@
-const notFoundError = (req, res) => {
-  res.status(404).json('Not Found');
+const notFoundError = (error, req, res, next) => {
+  res.status(404).json({error: error.message});
+  next(error);
 };
 
-module.exports = notFoundError
+module.exports = notFoundError;

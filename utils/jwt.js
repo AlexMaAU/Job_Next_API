@@ -12,6 +12,7 @@ const generateToken = (payload) => {
 };
 
 const validateToken = (token) => {
+  // jwt.verify 函数用来验证 JWT 是否有效，并从中提取 payload 的内容
   return jwt.verify(token, JWT_KEY);
 };
 
