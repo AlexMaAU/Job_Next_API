@@ -33,6 +33,7 @@ const signup = async (req, res) => {
     return res.status(400).json('Missing username or email or password');
   }
   try {
+    // use joi to validate data, then store validated data into database
     const validBody = await userSchema.validateAsync({
       username,
       email,
