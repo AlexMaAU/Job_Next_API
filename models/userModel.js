@@ -14,6 +14,7 @@ const schema = new Schema({
   password: {
     type: String,
     required: [true, 'please provide a password'],
+    select: false,  // when we return user, password will not be shown
   },
 });
 

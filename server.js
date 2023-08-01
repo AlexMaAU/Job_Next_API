@@ -27,7 +27,7 @@ if (process.env.NODE_ENV !== 'production') {
 
 app.use('/api/health', tokenValidation, healthCheckRouter);
 app.use('/api/v1/users', authRouter);
-app.use('/api/v1/jobs', jobsRouter);
+app.use('/api/v1/jobs', tokenValidation, jobsRouter);
 app.use('/*', notFoundRouter); //for unmatched endpoint request
 
 app.use(validationError);

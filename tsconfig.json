@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "es2020", //declare using ES module
+    "outDir": "./built", //ts compiled files saving directory
+    "allowJs": true,
+    "target": "ES5",
+    "esModuleInterop": true, //allow import export as module
+    "moduleResolution": "NodeNext" //depends on project using react or next
+  },
+  "include": ["./**/*"]
+}
+
+// Sample of tsconfig.json configuration
