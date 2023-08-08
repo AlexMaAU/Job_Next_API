@@ -16,7 +16,6 @@ const tokenValidation = (req, res, next) => {
   try {
     const payload = validateToken(token);
     req.user = payload;
-    console.log(req.user.email);
     next();
   } catch (error) {
     res.status(401).json({ error: 'invalid token' });

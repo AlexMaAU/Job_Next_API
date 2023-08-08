@@ -9,7 +9,7 @@ const login = async (req, res, next) => {
   }
   try {
     const user = await userModel
-      .findOne({ email: email })  // use email to login
+      .findOne({ email: email }) // use email to login
       .select('+password') // .select('+password'), get password from database, need password for comparing. By model setting, when we return user, password will not be shown
       .exec();
     console.log(user);
@@ -25,7 +25,7 @@ const login = async (req, res, next) => {
     user.password = undefined;
     const userId = user._id;
     // save newUser successfully, then generate a JWT token
-    const token = generateToken({ userId });  //userId as payload
+    const token = generateToken({ userId }); //userId as payload
     console.log(token);
     res.status(201).json({ user, token }); // send token to frontend, token contains user.email
   } catch (err) {
@@ -49,8 +49,8 @@ const signup = async (req, res, next) => {
     });
 
     //check if email has been taken
-    const emailCheck = userModel.findOne({ email }).exec();
-    if (emailCheck) {
+    const emailCheck = userModel.findOne({ email: email }).exec();
+    if (Object.keys(emailCheck).length !== 0) {
       return res
         .status(400)
         .json({ error: 'This email has been taken. Please try another.' });
