@@ -13,6 +13,6 @@ jobsRouter.post('/', createJob);
 
 jobsRouter.put('/:id', updateJob);
 
-jobsRouter.post('/:id', deleteJob);
+jobsRouter.delete('/:id', deleteJob);
 
 module.exports = jobsRouter;

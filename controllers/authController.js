@@ -1,6 +1,6 @@
 const userModel = require('../models/userModel');
 const { generateToken } = require('../utils/jwt');
-const userSchema = require('../validations/userValidation');
+const userValidation = require('../validations/userValidation');
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -9,7 +9,7 @@ const login = async (req, res, next) => {
   }
   try {
     const user = await userModel
-      .findOne({ email: email })
+      .findOne({ email: email })  // use email to login
       .select('+password') // .select('+password'), get password from database, need password for comparing. By model setting, when we return user, password will not be shown
       .exec();
     console.log(user);
@@ -23,8 +23,9 @@ const login = async (req, res, next) => {
     }
     // remove password from user，and return processed user to frontend
     user.password = undefined;
+    const userId = user._id;
     // save newUser successfully, then generate a JWT token
-    const token = generateToken({ email });
+    const token = generateToken({ userId });  //userId as payload
     console.log(token);
     res.status(201).json({ user, token }); // send token to frontend, token contains user.email
   } catch (err) {
@@ -41,7 +42,7 @@ const signup = async (req, res, next) => {
   }
   try {
     // use joi to validate data, then store validated data into database
-    const validBody = await userSchema.validateAsync({
+    const validBody = await userValidation.validateAsync({
       username,
       email,
       password,
@@ -61,8 +62,10 @@ const signup = async (req, res, next) => {
     await newUser.hashPassword();
     await newUser.save();
 
+    const userId = newUser._id;
+
     // save newUser successfully, then generate a JWT token
-    const token = generateToken({ email });
+    const token = generateToken({ userId });
     console.log(token);
     res.status(201).json({ newUser, token });
   } catch (err) {
@@ -105,7 +108,7 @@ const updateUser = async (req, res, next) => {
 // TO DO Later
 // Use third-party for authentication, send verify code to cellphone or email
 // 1. frontend send request to backend, ask user to provide valid cellphone number or email address
-// 2. backend generate a random verify code 
+// 2. backend generate a random verify code
 // 3. save the verify code under selected user
 // 4. verify code saved in database should have expire time, usually expire in 5 or 10 mins
 // 5. Send the verify code to user cellphone or email
