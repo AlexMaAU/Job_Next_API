@@ -1,6 +1,12 @@
 import { createJob } from './jobsController';
 import mongoose from 'mongoose';
 import { expect, jest } from '@jest/globals';
+import jobModel from '../models/jobModel';
+
+jobModel.create = jest.fn().mockResolvedValue({
+  position: 'Software Engineer',
+  company: 'Google',
+});
 
 const mockRequest = {
   body: {},
