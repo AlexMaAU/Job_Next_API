@@ -5,7 +5,7 @@ const createJob = async (req, res, next) => {
   const { position, company, jobType, jobLocation } = req.body;
   const createdBy = req.user.userId;
   if (!position || !company || !jobType || !jobLocation || !createdBy) {
-    return res.status(401).json({ error: 'Missing required field' });
+    return next({ error: 'Missing required fields' });
   }
   try {
     const validBody = await jobValidation.validateAsync({
@@ -19,9 +19,8 @@ const createJob = async (req, res, next) => {
     await newJob.save();
     res.status(201).json(newJob);
   } catch (error) {
-    next(err);
+    next(error);
   }
-  res.send('create job');
 };
 
 const getAllJobs = async (req, res, next) => {

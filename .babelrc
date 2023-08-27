@@ -1,0 +1,11 @@
+{
+  "presets": ["@babel/preset-env"],
+  "plugins": [
+    // 其他插件
+  ],
+  "env": {
+    "test": {
+      "presets": [["@babel/preset-env", { "modules": "commonjs" }]]
+    }
+  }
+}
